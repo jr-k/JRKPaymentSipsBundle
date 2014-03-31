@@ -1,13 +1,21 @@
 <?php
 
 /*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+    Copyright 2014 Jessym Reziga https://github.com/jreziga/JRKPaymentSipsBundle
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 namespace JRK\PaymentSipsBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -16,11 +24,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
+
 class JRKCommand extends ContainerAwareCommand
 {
-    /**
-     * @see Command
-     */
+ 
     protected function configure()
     {
         $this
@@ -50,9 +58,7 @@ EOT
         }
     }
 
-    /**
-     * @see Command
-     */
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path   = $input->getArgument('param_directory');
@@ -72,9 +78,7 @@ EOT
         $output->writeln(sprintf('Pathfile generated', $path));
     }
 
-    /**
-     * @see Command
-     */
+    
     protected function interact(InputInterface $input, OutputInterface $output)
     {
         if (!$input->getArgument('param_directory')) {

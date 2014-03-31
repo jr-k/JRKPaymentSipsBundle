@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright 2013  Jessym Reziga https://github.com/jreziga/JRKPaymentSipsBundle
+    Copyright 2014 Jessym Reziga https://github.com/jreziga/JRKPaymentSipsBundle
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
