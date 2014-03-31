@@ -6,7 +6,7 @@ Setup
 JRKPaymentSipsBundle requires the ATOS api folder
 
 
-- Using the vendors script
+- Using composer
 
 Add jrk/paymentsips-bundle as a dependency in your project's composer.json file:
 
@@ -16,6 +16,12 @@ Add jrk/paymentsips-bundle as a dependency in your project's composer.json file:
         "jrk/paymentsips-bundle": "dev-master"
     }
 }
+```
+Update composer
+```
+php app/console composer update
+or 
+php app/console composer.phar update
 ```
 
 Or add to your deps
