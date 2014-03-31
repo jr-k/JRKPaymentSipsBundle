@@ -1,11 +1,11 @@
 JRKPaymentSipsBundle
 =================
 
-[![License](https://poser.pugx.org/jrk/paymentsips-bundle/license.png)](https://packagist.org/packages/jrk/paymentsips-bundle)[![Monthly Downloads](https://poser.pugx.org/jrk/paymentsips-bundle/d/monthly.png)](https://packagist.org/packages/jrk/paymentsips-bundle)
+[![Monthly Downloads](https://poser.pugx.org/jrk/paymentsips-bundle/d/monthly.png)](https://packagist.org/packages/jrk/paymentsips-bundle)
 
 Symfony2 bundle for the paymentsips.
 
-**License**
+**License** 
 
 JRKPaymentSipsBundle is licensed under the GNU GPL v2 - see the `Resources/meta/LICENSE` file for details
 
