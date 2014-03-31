@@ -1,0 +1,7 @@
+dépôt github : jreziga
+Service key : jrkpaymentsips
+Service class : JRKPaymentSips
+yml root : jrk_paymentsips
+namespace: JRK
+namebundle : PaymentSipsBundle
+nameclass : JRKPaymentSipsBundle

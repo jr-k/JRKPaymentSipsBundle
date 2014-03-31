@@ -1,0 +1,7 @@
+jrk_sips_payment_response:
+    pattern: /sips_response
+    defaults: { _controller: JRKPaymentSipsBundle:Response:response}
+
+jrk_sips_payment_auto_response:
+    pattern: /a
+    defaults: { _controller: JRKPaymentSipsBundle:Response:autoresponse}
