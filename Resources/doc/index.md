@@ -3,7 +3,7 @@ Getting started with JRKPaymentSipsBundle
 
 Setup
 -----
-JRKPaymentSipsBundle requires [Foo](http://paymentsips.fr)
+JRKPaymentSipsBundle requires the ATOS api folder
 
 
 - Using the vendors script
