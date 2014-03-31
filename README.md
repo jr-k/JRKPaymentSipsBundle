@@ -1,7 +1,7 @@
 JRKPaymentSipsBundle
 =================
 
-[![Latest Stable Version](https://poser.pugx.org/jrk/paymentsips-bundle/v/stable.png)](https://packagist.org/packages/jreziga/paymentsips-bundle) [![Total Downloads](https://poser.pugx.org/jrk/paymentsips-bundle/downloads.png)](https://packagist.org/packages/jreziga/paymentsips-bundle)
+[![License](https://poser.pugx.org/jrk/paymentsips-bundle/license.png)](https://packagist.org/packages/jrk/paymentsips-bundle)[![Monthly Downloads](https://poser.pugx.org/jrk/paymentsips-bundle/d/monthly.png)](https://packagist.org/packages/jrk/paymentsips-bundle)
 
 Symfony2 bundle for the paymentsips.
 
