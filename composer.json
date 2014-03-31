@@ -2,7 +2,7 @@
     "name": "jrk/paymentsips-bundle",
     "type": "symfony-bundle",
     "description": "paymentsips bundle for symfony2",
-    "keywords": ["jrk","paymentsips"],
+    "keywords": ["jrk","paymentsips","sips","atos","payment","credit","card"],
     "homepage": "http://github.com/jreziga/JRKPaymentSipsBundle",
     "license": "MIT",
     "authors": [
