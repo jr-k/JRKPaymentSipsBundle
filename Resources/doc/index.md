@@ -93,30 +93,33 @@ jrk_payment_sips:
 ```
 
 - Console usage 
-1. install assets
+
+> Install assets
 ``` 
 php app/console assets:install
 ```
-2. specify param's path directory (by default use [app/config/sips/param])
+> Specify param's path directory (by default use [app/config/sips/param])
 ``` 
 php app/console jrk:sips:install
 ```
 
-- For example, with default values of the bundle, you can extract the API like this : 
+For example, with default values of the bundle, you can extract the API like this:
+
     .
     |-- app
     |   `-- config
     |       `-- sips
-    |           `-- bin
-    |               `-- static
-    |                   `-- request
-    |                   `-- response
-    |           `-- param
-    |               `-- certif.XXXXXXXXXXXX
-    |               `-- parmcom.XXXXXXXXXXXX
-    |               `-- parmcom.mercanet        # if you are using mercanet for example
-    |               `-- pathfile (generated)
-    |           `-- Version.txt
+    |       `-- bin
+    |           `-- static
+    |              `-- request
+    |              `-- response
+    |       `-- param
+    |           `-- certif.XXXXXXXXXXXX
+    |           `-- parmcom.XXXXXXXXXXXX
+    |           `-- parmcom.mercanet        # if you are using mercanet for example
+    |           `-- pathfile                # generated
+    |       `-- Version.txt
+
 
 
 
@@ -172,6 +175,7 @@ Controller example
         }
     
     
+        // Controller set in your config.yml : my_sips_response parameter
         public function my_sips_responseAction()
         {
             $order = $this->get('jrk_paymentsips')->sips_load_entity();
