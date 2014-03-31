@@ -19,9 +19,9 @@ Add jrk/paymentsips-bundle as a dependency in your project's composer.json file:
 ```
 Update composer
 ```
-php app/console composer update
+php composer update
 or 
-php app/console composer.phar update
+php composer.phar update
 ```
 
 Or add to your deps
