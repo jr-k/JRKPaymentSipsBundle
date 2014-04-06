@@ -138,7 +138,7 @@ Open your controller and call the service.
             "amount"=>10
             "currency_code"=>978   // Override params if you need
         ),
-        MyTransactionEntity
+        $YourTransactionEntityExample
     );
 ?>
 ```
