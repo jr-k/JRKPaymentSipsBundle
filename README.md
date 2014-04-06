@@ -133,7 +133,13 @@ Open your controller and call the service.
 
 ``` php
 <?php
-    $sips_form =  $this->get('jrk_paymentsips')->get_sips_request(array("amount"=>10),MyTransactionEntity);
+    $sips_form =  $this->get('jrk_paymentsips')->get_sips_request(
+        array(
+            "amount"=>10
+            "currency_code"=>978   // Override params if you need
+        ),
+        MyTransactionEntity
+    );
 ?>
 ```
 
@@ -170,7 +176,11 @@ Controller example
     
     
             // Render your payment page, you can render the sips form like that for twig : {{ sips_form }}
-            return $this->render('ShopFrontBundle:MyController:paymentpage.html.twig',array("sips_form"=>$sips_form));
+            return $this->render('ShopFrontBundle:MyController:paymentpage.html.twig',
+                array(
+                    "sips_form"=>$sips_form
+                )
+            );
     
         }
     
@@ -194,4 +204,11 @@ Controller example
         }
     }
 ?>
+```
+
+View (twig example)
+
+``` 
+Order page : 
+{{ sips_form|raw}}
 ```
