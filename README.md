@@ -135,7 +135,7 @@ Open your controller and call the service.
 <?php
     $sips_form =  $this->get('jrk_paymentsips')->get_sips_request(
         array(
-            "amount"=>10
+            "amount"=>10,
             "currency_code"=>978   // Override params if you need
         ),
         $YourTransactionEntityExample
