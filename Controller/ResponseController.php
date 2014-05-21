@@ -86,7 +86,71 @@ class ResponseController extends Controller
 			$datas["score_info"]= $tableau[39];
 			$datas["score_threshold"]= $tableau[40];
 			$datas["score_profile"]= $tableau[41];
+
+            $logfile=$this->p("jrk_sips_logs");
+            $fp=@fopen($logfile, "a+");
+
+            if (( $datas["code"] == "" ) && ( $datas["error"] == "" ) )
+            {
+                fwrite($fp, "erreur appel response\n");
+                print ("executable response non trouve $path_bin\n");
+            }
+            else if ( $datas["code"] != 0 ){
+                fwrite($fp, " API call error.\n");
+                fwrite($fp, "Error message :  ".$datas["error"]."\n");
+            }
+            else {
+                fwrite( $fp, "merchant_id : ".$datas['merchant_id']."\n");
+                fwrite( $fp, "merchant_country : ".$datas['merchant_country']."\n");
+                fwrite( $fp, "amount : ".$datas['amount']."\n");
+                fwrite( $fp, "transaction_id : ".$datas["transaction_id"]."\n");
+                fwrite( $fp, "transmission_date: ".$datas['transmission_date']."\n");
+                fwrite( $fp, "payment_means: ".$datas['payment_means']."\n");
+                fwrite( $fp, "payment_time : ".$datas['payment_time']."\n");
+                fwrite( $fp, "payment_date : ".$datas['payment_date']."\n");
+                fwrite( $fp, "response_code : ".$datas['response_code']."\n");
+                fwrite( $fp, "payment_certificate : ".$datas['payment_certificate']."\n");
+                fwrite( $fp, "authorisation_id : ".$datas['authorisation_id']."\n");
+                fwrite( $fp, "currency_code : ".$datas['currency_code']."\n");
+                fwrite( $fp, "card_number : ".$datas['card_number']."\n");
+                fwrite( $fp, "cvv_flag: ".$datas['cvv_flag']."\n");
+                fwrite( $fp, "cvv_response_code: ".$datas['cvv_response_code']."\n");
+                fwrite( $fp, "bank_response_code: ".$datas['bank_response_code']."\n");
+                fwrite( $fp, "complementary_code: ".$datas['complementary_code']."\n");
+                fwrite( $fp, "complementary_info: ".$datas['complementary_info']."\n");
+                fwrite( $fp, "return_context: ".$datas['return_context']."\n");
+                fwrite( $fp, "caddie : ".$datas['caddie']."\n");
+                fwrite( $fp, "receipt_complement: ".$datas['receipt_complement']."\n");
+                fwrite( $fp, "merchant_language: ".$datas['merchant_language']."\n");
+                fwrite( $fp, "language: ".$datas['language']."\n");
+                fwrite( $fp, "customer_id: ".$datas['customer_id']."\n");
+                fwrite( $fp, "order_id: ".$datas['order_id']."\n");
+                fwrite( $fp, "customer_email: ".$datas['customer_email']."\n");
+                fwrite( $fp, "customer_ip_address: ".$datas['customer_ip_address']."\n");
+                fwrite( $fp, "capture_day: ".$datas['capture_day']."\n");
+                fwrite( $fp, "capture_mode: ".$datas['capture_mode']."\n");
+                fwrite( $fp, "data: ".$datas['data']."\n");
+                fwrite( $fp, "order_validity: ".$datas['order_validity']."\n");
+                fwrite( $fp, "transaction_condition: ".$datas['transaction_condition']."\n");
+                fwrite( $fp, "statement_reference: ".$datas['statement_reference']."\n");
+                fwrite( $fp, "card_validity: ".$datas['card_validity']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_value']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_color']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_info']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_threshold']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_profile']."\n");
+                fwrite( $fp, "-------------------------------------------\n");
+            }
+            fclose ($fp);
+
 		}
+        else {
+            $logfile=$this->p("jrk_sips_logs");
+            $fp=@fopen($logfile, "a+");
+            fwrite($fp,"No datas\n");
+            fclose($fp);
+        }
+
 
         $this->get('session')->getFlashBag()->add('sips_request_details', $datas);
         $response = $this->forward($this->routeToControllerName($this->p("jrk_sips_route_response")));
@@ -101,12 +165,14 @@ class ResponseController extends Controller
 
     public function routeToControllerName($routename) {
         $routes = $this->get('router')->getRouteCollection();
-        return $routes->get($routename)->getDefaults()['_controller'];
+		$controllers = $routes->get($routename)->getDefaults();
+        return $controllers['_controller'];
     }
 
 
     public function autoresponseAction()
     {
+        $datas = array();
 
         if (isset($_POST["DATA"])) {
             $message="message=".$_POST["DATA"];
@@ -115,105 +181,6 @@ class ResponseController extends Controller
             $message = escapeshellcmd($message);
             $result=exec("$path_bin $pathfile $message");
             $tableau = explode ("!", $result);
-
-            $code = $tableau[1];
-            $error = $tableau[2];
-            $merchant_id = $tableau[3];
-            $merchant_country = $tableau[4];
-            $amount = $tableau[5];
-            $transaction_id = $tableau[6];
-            $payment_means = $tableau[7];
-            $transmission_date= $tableau[8];
-            $payment_time = $tableau[9];
-            $payment_date = $tableau[10];
-            $response_code = $tableau[11];
-            $payment_certificate = $tableau[12];
-            $authorisation_id = $tableau[13];
-            $currency_code = $tableau[14];
-            $card_number = $tableau[15];
-            $cvv_flag = $tableau[16];
-            $cvv_response_code = $tableau[17];
-            $bank_response_code = $tableau[18];
-            $complementary_code = $tableau[19];
-            $complementary_info= $tableau[20];
-            $return_context = $tableau[21];
-            $caddie = $tableau[22];
-            $receipt_complement = $tableau[23];
-            $merchant_language = $tableau[24];
-            $language = $tableau[25];
-            $customer_id = $tableau[26];
-            $order_id = $tableau[27];
-            $customer_email = $tableau[28];
-            $customer_ip_address = $tableau[29];
-            $capture_day = $tableau[30];
-            $capture_mode = $tableau[31];
-            $data = $tableau[32];
-            $order_validity = $tableau[33];
-            $transaction_condition = $tableau[34];
-            $statement_reference = $tableau[35];
-            $card_validity = $tableau[36];
-            $score_value = $tableau[37];
-            $score_color = $tableau[38];
-            $score_info = $tableau[39];
-            $score_threshold = $tableau[40];
-            $score_profile = $tableau[41];
-
-            $logfile=$this->p("jrk_sips_logs");
-            $fp=@fopen($logfile, "a+");
-
-            if (( $code == "" ) && ( $error == "" ) )
-            {
-                fwrite($fp, "erreur appel response\n");
-                print ("executable response non trouve $path_bin\n");
-            }
-            else if ( $code != 0 ){
-                fwrite($fp, " API call error.\n");
-                fwrite($fp, "Error message :  $error\n");
-            }
-            else {
-                fwrite( $fp, "merchant_id : $merchant_id\n");
-                fwrite( $fp, "merchant_country : $merchant_country\n");
-                fwrite( $fp, "amount : $amount\n");
-                fwrite( $fp, "transaction_id : $transaction_id\n");
-                fwrite( $fp, "transmission_date: $transmission_date\n");
-                fwrite( $fp, "payment_means: $payment_means\n");
-                fwrite( $fp, "payment_time : $payment_time\n");
-                fwrite( $fp, "payment_date : $payment_date\n");
-                fwrite( $fp, "response_code : $response_code\n");
-                fwrite( $fp, "payment_certificate : $payment_certificate\n");
-                fwrite( $fp, "authorisation_id : $authorisation_id\n");
-                fwrite( $fp, "currency_code : $currency_code\n");
-                fwrite( $fp, "card_number : $card_number\n");
-                fwrite( $fp, "cvv_flag: $cvv_flag\n");
-                fwrite( $fp, "cvv_response_code: $cvv_response_code\n");
-                fwrite( $fp, "bank_response_code: $bank_response_code\n");
-                fwrite( $fp, "complementary_code: $complementary_code\n");
-                fwrite( $fp, "complementary_info: $complementary_info\n");
-                fwrite( $fp, "return_context: $return_context\n");
-                fwrite( $fp, "caddie : $caddie\n");
-                fwrite( $fp, "receipt_complement: $receipt_complement\n");
-                fwrite( $fp, "merchant_language: $merchant_language\n");
-                fwrite( $fp, "language: $language\n");
-                fwrite( $fp, "customer_id: $customer_id\n");
-                fwrite( $fp, "order_id: $order_id\n");
-                fwrite( $fp, "customer_email: $customer_email\n");
-                fwrite( $fp, "customer_ip_address: $customer_ip_address\n");
-                fwrite( $fp, "capture_day: $capture_day\n");
-                fwrite( $fp, "capture_mode: $capture_mode\n");
-                fwrite( $fp, "data: $data\n");
-                fwrite( $fp, "order_validity: $order_validity\n");
-                fwrite( $fp, "transaction_condition: $transaction_condition\n");
-                fwrite( $fp, "statement_reference: $statement_reference\n");
-                fwrite( $fp, "card_validity: $card_validity\n");
-                fwrite( $fp, "card_validity: $score_value\n");
-                fwrite( $fp, "card_validity: $score_color\n");
-                fwrite( $fp, "card_validity: $score_info\n");
-                fwrite( $fp, "card_validity: $score_threshold\n");
-                fwrite( $fp, "card_validity: $score_profile\n");
-                fwrite( $fp, "-------------------------------------------\n");
-            }
-            fclose ($fp);
-
 
             $datas = array();
             $datas["code"]= $tableau[1];
@@ -258,7 +225,61 @@ class ResponseController extends Controller
             $datas["score_threshold"]= $tableau[40];
             $datas["score_profile"]= $tableau[41];
 
+            $logfile=$this->p("jrk_sips_logs");
+            $fp=@fopen($logfile, "a+");
 
+            if (( $datas["code"] == "" ) && ( $datas["error"] == "" ) )
+            {
+                fwrite($fp, "erreur appel response\n");
+                print ("executable response non trouve $path_bin\n");
+            }
+            else if ( $datas["code"] != 0 ){
+                fwrite($fp, " API call error.\n");
+                fwrite($fp, "Error message :  ".$datas["error"]."\n");
+            }
+            else {
+                fwrite( $fp, "merchant_id : ".$datas['merchant_id']."\n");
+                fwrite( $fp, "merchant_country : ".$datas['merchant_country']."\n");
+                fwrite( $fp, "amount : ".$datas['amount']."\n");
+                fwrite( $fp, "transaction_id : ".$datas["transaction_id"]."\n");
+                fwrite( $fp, "transmission_date: ".$datas['transmission_date']."\n");
+                fwrite( $fp, "payment_means: ".$datas['payment_means']."\n");
+                fwrite( $fp, "payment_time : ".$datas['payment_time']."\n");
+                fwrite( $fp, "payment_date : ".$datas['payment_date']."\n");
+                fwrite( $fp, "response_code : ".$datas['response_code']."\n");
+                fwrite( $fp, "payment_certificate : ".$datas['payment_certificate']."\n");
+                fwrite( $fp, "authorisation_id : ".$datas['authorisation_id']."\n");
+                fwrite( $fp, "currency_code : ".$datas['currency_code']."\n");
+                fwrite( $fp, "card_number : ".$datas['card_number']."\n");
+                fwrite( $fp, "cvv_flag: ".$datas['cvv_flag']."\n");
+                fwrite( $fp, "cvv_response_code: ".$datas['cvv_response_code']."\n");
+                fwrite( $fp, "bank_response_code: ".$datas['bank_response_code']."\n");
+                fwrite( $fp, "complementary_code: ".$datas['complementary_code']."\n");
+                fwrite( $fp, "complementary_info: ".$datas['complementary_info']."\n");
+                fwrite( $fp, "return_context: ".$datas['return_context']."\n");
+                fwrite( $fp, "caddie : ".$datas['caddie']."\n");
+                fwrite( $fp, "receipt_complement: ".$datas['receipt_complement']."\n");
+                fwrite( $fp, "merchant_language: ".$datas['merchant_language']."\n");
+                fwrite( $fp, "language: ".$datas['language']."\n");
+                fwrite( $fp, "customer_id: ".$datas['customer_id']."\n");
+                fwrite( $fp, "order_id: ".$datas['order_id']."\n");
+                fwrite( $fp, "customer_email: ".$datas['customer_email']."\n");
+                fwrite( $fp, "customer_ip_address: ".$datas['customer_ip_address']."\n");
+                fwrite( $fp, "capture_day: ".$datas['capture_day']."\n");
+                fwrite( $fp, "capture_mode: ".$datas['capture_mode']."\n");
+                fwrite( $fp, "data: ".$datas['data']."\n");
+                fwrite( $fp, "order_validity: ".$datas['order_validity']."\n");
+                fwrite( $fp, "transaction_condition: ".$datas['transaction_condition']."\n");
+                fwrite( $fp, "statement_reference: ".$datas['statement_reference']."\n");
+                fwrite( $fp, "card_validity: ".$datas['card_validity']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_value']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_color']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_info']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_threshold']."\n");
+                fwrite( $fp, "card_validity: ".$datas['score_profile']."\n");
+                fwrite( $fp, "-------------------------------------------\n");
+            }
+            fclose ($fp);
 
         }
         else {
