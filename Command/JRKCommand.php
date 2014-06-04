@@ -67,7 +67,7 @@ EOT
 
         $file = @fopen($path."/pathfile","w+");
         fwrite($file,"DEBUG!NO!\n");
-        fwrite($file,"D_LOGO!/web/bundles/jrkpaymentsips/sips/logo/!\n");
+        fwrite($file,"D_LOGO!/bundles/jrkpaymentsips/sips/logo/!\n");
         fwrite($file,"F_DEFAULT!".realpath("./")."/".$path."/parmcom.mercanet!\n");
         fwrite($file,"F_PARAM!".realpath("./")."/".$path."/parmcom!\n");
         fwrite($file,"F_CERTIFICATE!".realpath("./")."/".$path."/certif!\n");
