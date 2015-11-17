@@ -49,8 +49,10 @@ class Configuration implements ConfigurationInterface {
             ->arrayNode('links')
                 ->children()
                     ->scalarNode('sips_route_response')->end()
+                    ->scalarNode('sips_controller_response')->end()
                     ->scalarNode('sips_cancel_return_url')->end()
                     ->scalarNode('sips_route_auto_response')->end()
+                    ->scalarNode('sips_controller_auto_response')->end()
         ->end();
         return $treeBuilder;
     }

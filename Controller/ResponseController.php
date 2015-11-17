@@ -20,6 +20,7 @@
 namespace JRK\PaymentSipsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -153,13 +154,23 @@ class ResponseController extends Controller
 
 
         $this->get('session')->getFlashBag()->add('sips_request_details', $datas);
-        $response = $this->forward($this->routeToControllerName($this->p("jrk_sips_route_response")));
+
+        if ($this->hp('jrk_sips_controller_response')) {
+            $response = $this->forward($this->p("jrk_sips_controller_response"));
+        } else {
+            $response = $this->forward($this->routeToControllerName($this->p("jrk_sips_route_response")));
+        }
 
 		return $response;
     }
 
     public function p($str){
         return $this->container->getParameter($str);
+    }
+
+
+    public function hp($str){
+        return $this->container->hasParameter($str);
     }
 
 
@@ -290,7 +301,12 @@ class ResponseController extends Controller
         }
 
         $this->get('session')->getFlashBag()->add('sips_request_details_auto', $datas);
-        $response = $this->forward($this->routeToControllerName($this->p("jrk_sips_route_auto_response")));
+
+        if ($this->hp('jrk_sips_controller_response')) {
+            $response = $this->forward($this->p("jrk_sips_controller_auto_response"));
+        } else {
+            $response = $this->forward($this->routeToControllerName($this->p("jrk_sips_route_auto_response")));
+        }
 
         return $response;
     }
