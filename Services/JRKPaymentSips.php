@@ -79,7 +79,7 @@ class JRKPaymentSips {
         return array();
     }
 
-    public function get_sips_request($attrbs = array(),$transaction = null){
+    public function get_sips_request($attrbs = array(),$transaction = null, $tag = null){
 
 		$path_bin = $this->p("jrk_sips_request");
 
@@ -152,7 +152,7 @@ class JRKPaymentSips {
         }
 
 
-        $this->sips_save_entity($transaction);
+        $this->sips_save_entity($transaction, true, $tag);
 
         return $this->datas_request["render"];
     }
@@ -174,15 +174,30 @@ class JRKPaymentSips {
         return $currencies[$currency_iso];
     }
 
+    public function sips_clear() {
+        $this->container->get('session')->remove('sips_entity');
+        $this->container->get('session')->remove('sips_entity_tag');
+    }
 
-    public function sips_save_entity($item,$clear = true){
-        if ($clear) $this->container->get('session')->clear();
+    public function sips_save_entity($item,$clear = true, $tag = null){
+        if ($clear) $this->sips_clear();
         $this->container->get('session')->set('sips_entity', $item);
+
+        if ($tag != null) {
+            $this->container->get('session')->set('sips_entity_tag', $tag);
+        }
     }
 
     public function sips_load_entity($clear = true){
         $entity = $this->container->get('session')->get('sips_entity');
-        if ($clear) $this->container->get('session')->clear();
+
+        if ($this->container->get('session')->has('sips_entity_tag')) {
+            $tag = $this->container->get('session')->get('sips_entity_tag');
+            if ($clear) $this->sips_clear();
+            return array($entity, $tag);
+        }
+
+        if ($clear) $this->sips_clear();
         return $entity;
     }
 
