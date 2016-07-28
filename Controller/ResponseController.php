@@ -25,8 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
-/* 
-*  	Powered by the WCE Community 
+/*
+*  	Powered by the WCE Community
 *	Worst code ever presents... The ResponseController !
 */
 
@@ -37,9 +37,9 @@ class ResponseController extends Controller
     {
         $datas = array();
 
-		
+
 		if (isset($_POST["DATA"])) {
-		
+
 			$message="message=".$_POST["DATA"];
 			$pathfile="pathfile=".$this->p("jrk_sips_pathfile");
 			$path_bin = $this->p("jrk_sips_response");
@@ -302,7 +302,7 @@ class ResponseController extends Controller
 
         $this->get('session')->getFlashBag()->add('sips_request_details_auto', $datas);
 
-        if ($this->hp('jrk_sips_controller_response')) {
+        if ($this->hp('jrk_sips_controller_auto_response')) {
             $response = $this->forward($this->p("jrk_sips_controller_auto_response"));
         } else {
             $response = $this->forward($this->routeToControllerName($this->p("jrk_sips_route_auto_response")));
