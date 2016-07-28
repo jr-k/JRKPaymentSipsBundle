@@ -24,8 +24,8 @@ namespace JRK\PaymentSipsBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 
-/* 
-*  	Powered by the WCE Community 
+/*
+*  	Powered by the WCE Community
 *	Worst code ever presents... The JRKPaymentSips service !
 */
 class JRKPaymentSips {
@@ -33,7 +33,7 @@ class JRKPaymentSips {
 
 
     public $container;
-	
+
     public $datas_request;
 
     public function __construct(Container $container = null) {
@@ -83,7 +83,7 @@ class JRKPaymentSips {
 
 		$path_bin = $this->p("jrk_sips_request");
 
-	
+
 		if (empty($path_bin)) {
 			throw new \Exception('jrk_payment_sips.files.sips_request is not set');
 		}
@@ -107,9 +107,9 @@ class JRKPaymentSips {
         $parm .= $this->defset($attrbs,"language");
         $parm .= $this->defset($attrbs,"payment_means");
         $parm .= $this->defset($attrbs,"header_flag");
-		
 
-		
+
+
         foreach($attrbs as $k => $v){ $parm .= $k."=".$v." "; $this->datas_request[$k] = $v; }
         /*
 		$parm="$parm capture_day="; $parm="$parm capture_mode="; $parm="$parm bgcolor="; $parm="$parm order_id=";
@@ -123,7 +123,6 @@ class JRKPaymentSips {
         foreach($user_data as $k => $v) { $parm.=$k."=".$v.";";}
         $parm = substr($parm,0,-1);
         */
-        $parm .="data=NO_RESPONSE_PAGE ";
 
         $parm = escapeshellcmd($parm);
 
@@ -139,7 +138,7 @@ class JRKPaymentSips {
         $this->datas_request["error"] = $tableau[2];
         $this->datas_request["render"] = $tableau[3];
         $this->datas_request["path_bin"] = $path_bin;
-		
+
 		if (( $this->datas_request["code"] == "" ) && ( $this->datas_request["error"] == "" ) ) {
             throw new \Exception("call to $path_bin failed");
         }
@@ -156,12 +155,12 @@ class JRKPaymentSips {
 
         return $this->datas_request["render"];
     }
-	
+
 	public function getCurrencySipsCode($currency_iso)
     {
-		if (preg_match('#^([0-9]+)$#',$currency_iso)) 
+		if (preg_match('#^([0-9]+)$#',$currency_iso))
 			return $currency_iso;
-		
+
         $currencies = array(
             "EUR" => "978","USD" => "840",'EUR' => '978', 'USD' => '840','CHF' => '756','GBP' => '826',
             'CAD' => '124','JPY' => '392', 'MXP' => '484','TRL' => '792','AUD' => '036','NZD' => '554',
