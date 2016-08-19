@@ -24,27 +24,6 @@ or
 php composer.phar update
 ```
 
-Or add to your deps
-
-```
-[JRKPaymentSipsBundle]
-    git=git://github.com/jreziga/JRKPaymentSipsBundle.git
-    target=bundles/JRK/PaymentSipsBundle
-```
-
-... and run php bin/vendors install
-
-... and add the JRK namespace to autoloader
-
-``` php
-<?php
-   // app/autoload.php
-   $loader->registerNamespaces(array(
-    // ...
-    'JRK' => __DIR__.'/../vendor/bundles',
-  ));
-```
-
 - Add JRKPaymentSipsBundle to your application kernel
 
 ``` php
