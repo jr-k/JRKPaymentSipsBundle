@@ -167,7 +167,7 @@ the variable structuredData will contain the following data :
 - score_threshold
 - score_profile
 
-Then with the "code" and the "response_code", you'll know the state of the payment.
+Attributes "code" and "response_code" will give you more informations about the state of the payment.
 You can now use the "sips_route_response" method in your controller
 
 
