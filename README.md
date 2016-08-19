@@ -111,9 +111,9 @@ Open your controller and call the service.
 <?php
     $sips_form =  $this->get('jrk_paymentsips')->get_sips_request(
         array(
-            "amount"=>10,
-            "currency_code"=>978   // Override params if you need
-            "order_id"=>12
+            "amount" => 10,
+            "currency_code" => 978   // Override params if you need
+            "order_id" => 12
         ),
         $YourTransactionEntityExample
     );
@@ -204,10 +204,9 @@ Controller example
 
         public function paymentpageAction()
         {
-
+        
             // Initialize your order entity or whatever you want
             $order = new OrderExample();
-
 
             // Don't forget to set an amount in array
             // You can dynamically override config parameters here like currency_code etc...
@@ -218,7 +217,6 @@ Controller example
                 ),
                 $order
             );
-
 
             // Render your payment page, you can render the sips form like that for twig : {{ sips_form }}
             return $this->render('ShopFrontBundle:MyController:paymentpage.html.twig',
