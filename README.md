@@ -74,13 +74,9 @@ jrk_payment_sips:
 
 - Console usage
 
-> Install assets
+> Install assets - You'll have to specify param's path directory (by default use [app/config/sips/param])
 ```
 php app/console assets:install
-```
-> Specify param's path directory (by default use [app/config/sips/param])
-```
-php app/console jrk:sips:install
 ```
 
 For example, with default values of the bundle, you can extract the API like this:
