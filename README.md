@@ -126,54 +126,54 @@ Open your controller and call the service.
 
 The bundle forward an array with the server response in a multidimensionnal array :
 
-In your response action, if you call this : $structuredData = $request->attributes->get('response_data');
+In your response action, if you call this : `$structuredData = $request->attributes->get('response_data')`;
 the variable structuredData will contain the following data :
 
-structuredData["code"]
-structuredData["error"]
-structuredData["merchant_id"]
-structuredData["merchant_country"]
-structuredData["amount"]
-structuredData["transaction_id"]
-structuredData["payment_means"]
-structuredData["transmission_date"]
-structuredData["payment_time"]
-structuredData["payment_date"]
-structuredData["response_code"]
-structuredData["payment_certificate"]
-structuredData["authorisation_id"]
-structuredData["currency_code"]
-structuredData["card_number"]
-structuredData["cvv_flag"]
-structuredData["cvv_response_code"]
-structuredData["bank_response_code"]
-structuredData["complementary_code"]
-structuredData["complementary_info"]
-structuredData["return_context"]
-structuredData["caddie"]
-structuredData["receipt_complement"]
-structuredData["merchant_language"]
-structuredData["language"]
-structuredData["customer_id"]
-structuredData["order_id"]
-structuredData["customer_email"]
-structuredData["customer_ip_address"]
-structuredData["capture_day"]
-structuredData["capture_mode"]
-structuredData["data"]
-structuredData["order_validity"]
-structuredData["transaction_condition"]
-structuredData["statement_reference"]
-structuredData["card_validity"]
-structuredData["score_value"]
-structuredData["score_color"]
-structuredData["score_info"]
-structuredData["score_threshold"]
-structuredData["score_profile"]
+- code
+- error
+- merchant_id
+- merchant_country
+- amount
+- transaction_id
+- payment_means
+- transmission_date
+- payment_time
+- payment_date
+- response_code
+- payment_certificate
+- authorisation_id
+- currency_code
+- card_number
+- cvv_flag
+- cvv_response_code
+- bank_response_code
+- complementary_code
+- complementary_info
+- return_context
+- caddie
+- receipt_complement
+- merchant_language
+- language
+- customer_id
+- order_id
+- customer_email
+- customer_ip_address
+- capture_day
+- capture_mode
+- data
+- order_validity
+- transaction_condition
+- statement_reference
+- card_validity
+- score_value
+- score_color
+- score_info
+- score_threshold
+- score_profile
 
-Then with the "code" and the "response_code", you can know the state of the payment.
+Then with the "code" and the "response_code", you'll know the state of the payment.
+You can now use the "sips_route_response" method in your controller
 
-Then you can use this method in your "sips_route_response" controller
 
 ``` php
 <?php
@@ -269,5 +269,5 @@ View (twig example)
 
 ```
 Order page :
-{{ sips_form|raw}}
+{{ sips_form|raw }}
 ```
