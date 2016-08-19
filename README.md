@@ -20,7 +20,7 @@ Add jrk/paymentsips-bundle as a dependency in your project's composer.json file:
 Update composer
 ```
 php composer update
-or 
+or
 php composer.phar update
 ```
 
@@ -60,6 +60,7 @@ jrk_payment_sips:
     links:
         sips_cancel_return_url: "my_homepage_route"     # Route to redirect if the payment is canceled
         sips_route_response: "my_sips_response"         # Route to redirect if the payment is accepted
+        sips_route_auto_response: "my_sips_autoresponse" # Route called by the payment server
 ```
 
 - Routes import
@@ -71,14 +72,14 @@ jrk_payment_sips:
     prefix: /payment
 ```
 
-- Console usage 
+- Console usage
 
 > Install assets
-``` 
+```
 php app/console assets:install
 ```
 > Specify param's path directory (by default use [app/config/sips/param])
-``` 
+```
 php app/console jrk:sips:install
 ```
 
@@ -116,21 +117,84 @@ Open your controller and call the service.
         array(
             "amount"=>10,
             "currency_code"=>978   // Override params if you need
+            "order_id"=>12
         ),
         $YourTransactionEntityExample
     );
 ?>
 ```
 
+The bundle forward an array with the server response in a multidimensionnal array :
+
+In your response action, if you call this : $structuredData = $request->attributes->get('response_data');
+the variable structuredData will contain the following data :
+
+structuredData["code"]
+structuredData["error"]
+structuredData["merchant_id"]
+structuredData["merchant_country"]
+structuredData["amount"]
+structuredData["transaction_id"]
+structuredData["payment_means"]
+structuredData["transmission_date"]
+structuredData["payment_time"]
+structuredData["payment_date"]
+structuredData["response_code"]
+structuredData["payment_certificate"]
+structuredData["authorisation_id"]
+structuredData["currency_code"]
+structuredData["card_number"]
+structuredData["cvv_flag"]
+structuredData["cvv_response_code"]
+structuredData["bank_response_code"]
+structuredData["complementary_code"]
+structuredData["complementary_info"]
+structuredData["return_context"]
+structuredData["caddie"]
+structuredData["receipt_complement"]
+structuredData["merchant_language"]
+structuredData["language"]
+structuredData["customer_id"]
+structuredData["order_id"]
+structuredData["customer_email"]
+structuredData["customer_ip_address"]
+structuredData["capture_day"]
+structuredData["capture_mode"]
+structuredData["data"]
+structuredData["order_validity"]
+structuredData["transaction_condition"]
+structuredData["statement_reference"]
+structuredData["card_validity"]
+structuredData["score_value"]
+structuredData["score_color"]
+structuredData["score_info"]
+structuredData["score_threshold"]
+structuredData["score_profile"]
+
+Then with the "code" and the "response_code", you can know the state of the payment.
+
 Then you can use this method in your "sips_route_response" controller
 
 ``` php
 <?php
-    $order = $this->get('jrk_paymentsips')->sips_load_entity();
-    
-    // Store the validated order in database for example
-    $em = $this->getEntityManager();
-    $em->persist($item);
+    // Retrieve the data forwarded by the bundle
+    $responseData = $request->attributes->get('response_data');
+
+    $orderId = $responseData['order_id'];
+
+    // Get your order entity
+    $order = $this
+        ->getDoctrine()
+        ->getEntityManager()
+        ->getRepository('YourBundle:YourEntity')
+        ->find($orderId)
+    ;
+
+    // Update your entity data, for exemple order state
+    $order->setState("ACCEPTED");
+
+    $em=$this->getDoctrine()->getEntityManager();
+    $em->persist($order);
     $em->flush();
 ?>
 ```
@@ -144,40 +208,56 @@ Controller example
 
         public function paymentpageAction()
         {
-    
+
             // Initialize your order entity or whatever you want
             $order = new OrderExample();
-            
-         
+
+
             // Don't forget to set an amount in array
             // You can dynamically override config parameters here like currency_code etc...
-            $sips_form = $this->get('jrk_paymentsips')->get_sips_request(array("amount"=>$order->getAmount()),$order);
-    
-    
+            $paymentForm = $this->get('jrk_paymentsips')->get_sips_request(
+                array(
+                    'amount' => $price,
+                    'order_id' => $order->getId()
+                ),
+                $order
+            );
+
+
             // Render your payment page, you can render the sips form like that for twig : {{ sips_form }}
             return $this->render('ShopFrontBundle:MyController:paymentpage.html.twig',
                 array(
                     "sips_form"=>$sips_form
                 )
             );
-    
+
         }
-    
-    
+
+
         // Controller set in your config.yml : my_sips_response parameter
         public function my_sips_responseAction()
         {
-            $order = $this->get('jrk_paymentsips')->sips_load_entity();
-            
+            $responseData = $request->attributes->get('response_data');
+
+            $orderId = $responseData['order_id'];
+
+            // Find your order in your database
+            $order = $this
+                ->getDoctrine()
+                ->getEntityManager()
+                ->getRepository('YourBundle:YourEntity')
+                ->find($orderId)
+            ;
+
             // Store your transaction entity in database for example, or attributes.
             $order->setState("ACCEPTED");
             $em = $this->getEntityManager();
             $em->persist($order);
             $em->flush();
-            
+
             // Notify the user by mail for example
             /* ... */
-            
+
             // Redirect the user in his history orders for example
             return $this->redirect($this->generateUrl("user_history_orders"));
         }
@@ -187,7 +267,7 @@ Controller example
 
 View (twig example)
 
-``` 
-Order page : 
+```
+Order page :
 {{ sips_form|raw}}
 ```

@@ -44,7 +44,6 @@ class JRKPaymentSips {
         return $this->container->getParameter($str);
     }
 
-
     public function defset(&$arr,$str,$url = false){
         if (!array_key_exists($str,$arr)){
             if ($url){
@@ -57,26 +56,12 @@ class JRKPaymentSips {
             $this->datas_request[$str] = $val;
             return $str = $str."=".$val." ";
         }
-		else if ($url && $str != "cancel_return_url") {
-			$val = $this->container->get('router')->generate("jrk_sips_".$arr[$str],array(),true);
-			$arr[$str] = $val;
-			$this->datas_request[$str] = $val;
-			return "";
-		}
-    }
-
-    public function get_sips_response(){
-        $details = $this->container->get('session')->getFlashBag()->get('sips_request_details');
-        if (array_key_exists("0",$details))
-            return $details[0];
-        return array();
-    }
-
-    public function get_sips_auto_response(){
-        $details = $this->container->get('session')->getFlashBag()->get('sips_request_details_auto');
-        if (array_key_exists("0",$details))
-            return $details[0];
-        return array();
+        else if ($url) {
+            $val = $this->container->get('router')->generate("jrk_sips_".$arr[$str],array(),true);
+            $arr[$str] = $val;
+            $this->datas_request[$str] = $val;
+            return "";
+        }
     }
 
     public function get_sips_request($attrbs = array(),$transaction = null, $tag = null){
@@ -93,7 +78,8 @@ class JRKPaymentSips {
 
         $attrbs["normal_return_url"] = "payment_response";
         $attrbs["automatic_response_url"] = "payment_auto_response";
-		$attrbs["amount"]*=100;
+        $attrbs["cancel_return_url"] = "payment_cancel";
+        $attrbs["amount"]*=100;
 
         $datas = array();
         $parm = "";
@@ -107,30 +93,14 @@ class JRKPaymentSips {
         $parm .= $this->defset($attrbs,"language");
         $parm .= $this->defset($attrbs,"payment_means");
         $parm .= $this->defset($attrbs,"header_flag");
-
-
+        $parm .= $this->defset($attrbs,"order_id");
 
         foreach($attrbs as $k => $v){ $parm .= $k."=".$v." "; $this->datas_request[$k] = $v; }
-        /*
-		$parm="$parm capture_day="; $parm="$parm capture_mode="; $parm="$parm bgcolor="; $parm="$parm order_id=";
-		$parm="$parm block_align="; $parm="$parm block_order="; $parm="$parm textcolor="; $parm="$parm transaction_id=";
-		$parm="$parm receipt_complement="; $parm="$parm caddie=mon_caddie"; $parm="$parm customer_id=";
-		$parm="$parm customer_ip_address="; $parm="$parm data="; $parm="$parm return_context="; $parm="$parm target=";
-        */
-
-        /*
-        $parm .=";";
-        foreach($user_data as $k => $v) { $parm.=$k."=".$v.";";}
-        $parm = substr($parm,0,-1);
-        */
 
         $parm = escapeshellcmd($parm);
-
-
-
         $result = exec("$path_bin $parm");
-		//echo $path_bin." ".$parm;
-		if (empty($result)) {
+
+                if (empty($result)) {
 			throw new \Exception('Empty request from sips_request file, result '.$result);
 		}
         $tableau = explode("!", "$result");
@@ -150,9 +120,6 @@ class JRKPaymentSips {
             throw new \Exception("No message returned by SIPS \n Error: ".$this->datas_request["error"]);
         }
 
-
-        $this->sips_save_entity($transaction, true, $tag);
-
         return $this->datas_request["render"];
     }
 
@@ -171,33 +138,6 @@ class JRKPaymentSips {
             throw new \Exception("Uknown currency $currency_iso, Known currencies: ".implode(',', array_keys($currencies)));
         }
         return $currencies[$currency_iso];
-    }
-
-    public function sips_clear() {
-        $this->container->get('session')->remove('sips_entity');
-        $this->container->get('session')->remove('sips_entity_tag');
-    }
-
-    public function sips_save_entity($item,$clear = true, $tag = null){
-        if ($clear) $this->sips_clear();
-        $this->container->get('session')->set('sips_entity', $item);
-
-        if ($tag != null) {
-            $this->container->get('session')->set('sips_entity_tag', $tag);
-        }
-    }
-
-    public function sips_load_entity($clear = true){
-        $entity = $this->container->get('session')->get('sips_entity');
-
-        if ($this->container->get('session')->has('sips_entity_tag')) {
-            $tag = $this->container->get('session')->get('sips_entity_tag');
-            if ($clear) $this->sips_clear();
-            return array($entity, $tag);
-        }
-
-        if ($clear) $this->sips_clear();
-        return $entity;
     }
 
 }
