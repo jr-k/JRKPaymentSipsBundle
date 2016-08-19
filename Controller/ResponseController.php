@@ -224,7 +224,6 @@ class ResponseController extends Controller
         return $response;
     }
 
-    //@@ TODO : virer ou corriger le cancel
     public function cancelAction()
     {
         // Get payment structured data
