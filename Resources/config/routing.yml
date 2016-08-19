@@ -2,6 +2,10 @@ jrk_sips_payment_response:
     pattern: /sips_response
     defaults: { _controller: JRKPaymentSipsBundle:Response:response}
 
+jrk_sips_payment_cancel:
+    pattern: /sips_cancel
+    defaults: { _controller: JRKPaymentSipsBundle:Response:cancel}
+
 jrk_sips_payment_auto_response:
     pattern: /sips_auto_response
     defaults: { _controller: JRKPaymentSipsBundle:Response:autoresponse}
