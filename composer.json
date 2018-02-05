@@ -4,7 +4,7 @@
     "description": "paymentsips bundle for symfony2",
     "keywords": ["jrk","paymentsips","sips","atos","payment","credit","card"],
     "homepage": "http://github.com/jr-k/JRKPaymentSipsBundle",
-    "license": "GNU GPL v2",
+    "license": "MIT",
     "authors": [
         {
             "name": "Jessym Reziga",
