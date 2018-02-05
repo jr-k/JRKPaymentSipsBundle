@@ -227,7 +227,7 @@ Controller example
             // Render your payment page, you can render the sips form like that for twig : {{ sips_form }}
             return $this->render('ShopFrontBundle:MyController:paymentpage.html.twig',
                 array(
-                    "sips_form"=>$sips_form
+                    "sips_form"=>$paymentForm
                 )
             );
 
