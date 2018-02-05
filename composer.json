@@ -3,12 +3,12 @@
     "type": "symfony-bundle",
     "description": "paymentsips bundle for symfony2",
     "keywords": ["jrk","paymentsips","sips","atos","payment","credit","card"],
-    "homepage": "http://github.com/jreziga/JRKPaymentSipsBundle",
+    "homepage": "http://github.com/jr-k/JRKPaymentSipsBundle",
     "license": "GNU GPL v2",
     "authors": [
         {
             "name": "Jessym Reziga",
-            "homepage": "http://github.com/jreziga",
+            "homepage": "http://github.com/jr-k",
             "role": "Developer"
         }
     ],
